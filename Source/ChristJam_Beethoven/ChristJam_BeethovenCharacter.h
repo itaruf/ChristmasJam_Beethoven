@@ -66,6 +66,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;
 
+	UPROPERTY(EditAnywhere, Category = Speed)
+	float WalkSpeed;
+
+	UPROPERTY(EditAnywhere, Category = Speed)
+	float RunSpeed;
+
 	/** Gun muzzle's offset from the characters location */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Gameplay)
 	FVector GunOffset;
@@ -87,7 +93,12 @@ public:
 	uint8 bUsingMotionControllers : 1;
 
 protected:
-	
+
+	UFUNCTION()
+	void OnStartRun();
+
+	UFUNCTION()
+	void OnStopRun();
 	/** Fires a projectile. */
 	void OnFire();
 

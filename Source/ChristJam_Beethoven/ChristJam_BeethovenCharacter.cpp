@@ -11,6 +11,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "MotionControllerComponent.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
+#include "GameFramework/CharacterMovementComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
@@ -89,6 +90,8 @@ void AChristJam_BeethovenCharacter::BeginPlay()
 	// Call the base class  
 	Super::BeginPlay();
 
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+
 	//Attach gun mesh component to Skeleton, doing it here because the skeleton is not yet created in the constructor
 	FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
 
@@ -117,6 +120,10 @@ void AChristJam_BeethovenCharacter::SetupPlayerInputComponent(class UInputCompon
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
+	// Bind rune event
+	PlayerInputComponent->BindAction("Run", IE_Pressed, this, &AChristJam_BeethovenCharacter::OnStartRun);
+	PlayerInputComponent->BindAction("Run", IE_Released, this, &AChristJam_BeethovenCharacter::OnStopRun);
+
 	// Bind fire event
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AChristJam_BeethovenCharacter::OnFire);
 
@@ -137,6 +144,17 @@ void AChristJam_BeethovenCharacter::SetupPlayerInputComponent(class UInputCompon
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &AChristJam_BeethovenCharacter::LookUpAtRate);
 }
+
+void AChristJam_BeethovenCharacter::OnStartRun()
+{
+	GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+}
+
+void AChristJam_BeethovenCharacter::OnStopRun()
+{
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+}
+
 
 void AChristJam_BeethovenCharacter::OnFire()
 {
