@@ -72,6 +72,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = Speed)
 	float RunSpeed;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Run)
+	bool isRunning = false;
+
 	/** Gun muzzle's offset from the characters location */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Gameplay)
 	FVector GunOffset;

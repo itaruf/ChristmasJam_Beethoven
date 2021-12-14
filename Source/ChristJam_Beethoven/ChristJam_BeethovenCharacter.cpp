@@ -148,11 +148,13 @@ void AChristJam_BeethovenCharacter::SetupPlayerInputComponent(class UInputCompon
 void AChristJam_BeethovenCharacter::OnStartRun()
 {
 	GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+	isRunning = true;
 }
 
 void AChristJam_BeethovenCharacter::OnStopRun()
 {
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+	isRunning = false;
 }
 
 
