@@ -144,5 +144,18 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+	UPROPERTY(EditAnywhere)
+	float walkSpeed;
+
+	UPROPERTY(EditAnywhere)
+	float runSpeed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool isRunning;
+
+	UFUNCTION()
+	void OnStartRun();
+	UFUNCTION()
+	void OnStopRun();
 };
 

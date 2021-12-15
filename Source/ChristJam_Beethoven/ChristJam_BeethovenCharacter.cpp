@@ -10,6 +10,7 @@
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "MotionControllerComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
@@ -103,6 +104,8 @@ void AChristJam_BeethovenCharacter::BeginPlay()
 		VR_Gun->SetHiddenInGame(true, true);
 		Mesh1P->SetHiddenInGame(false, true);
 	}
+
+	GetCharacterMovement()->MaxWalkSpeed = walkSpeed;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -136,6 +139,19 @@ void AChristJam_BeethovenCharacter::SetupPlayerInputComponent(class UInputCompon
 	PlayerInputComponent->BindAxis("TurnRate", this, &AChristJam_BeethovenCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &AChristJam_BeethovenCharacter::LookUpAtRate);
+
+	PlayerInputComponent->BindAction("Run", IE_Pressed, this, &AChristJam_BeethovenCharacter::OnStartRun);
+	PlayerInputComponent->BindAction("Run", IE_Released, this, &AChristJam_BeethovenCharacter::OnStopRun);
+}
+
+void AChristJam_BeethovenCharacter::OnStartRun() {
+	GetCharacterMovement()->MaxWalkSpeed = runSpeed;
+	isRunning = true;
+}
+
+void AChristJam_BeethovenCharacter::OnStopRun() {
+	GetCharacterMovement()->MaxWalkSpeed = walkSpeed;
+	isRunning = false;
 }
 
 void AChristJam_BeethovenCharacter::OnFire()
